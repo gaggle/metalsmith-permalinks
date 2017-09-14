@@ -152,6 +152,26 @@ describe('metalsmith-permalinks', function(){
       });
   });
 
+  it('should relink files', function (done) {
+    Metalsmith('test/fixtures/relink')
+      .use(permalinks({pattern: 'foo', relink: true}))
+      .build(function(err){
+        if (err) return done(err);
+        equal('test/fixtures/relink/build', 'test/fixtures/relink/expected');
+        done();
+      });
+  });
+
+  it('should relink relative folder files', function (done) {
+    Metalsmith('test/fixtures/relink-relative-folder')
+      .use(permalinks({relative: 'folder', pattern: 'blog', relink: true}))
+      .build(function(err){
+        if (err) return done(err);
+        equal('test/fixtures/relink-relative-folder/build', 'test/fixtures/relink-relative-folder/expected');
+        done();
+      });
+  });
+
   it('should accepts a shorthand string', function(done){
     Metalsmith('test/fixtures/shorthand')
       .use(permalinks(':title'))
@@ -180,4 +200,18 @@ describe('metalsmith-permalinks', function(){
         done();
       });
   });
+
+  describe('integration tests' ,function () {
+    it('should pass integration 1, moving files to subfoldered pattern using relative folder strategy and relinking references', function(done){
+      Metalsmith('test/fixtures/integration1')
+        .use(permalinks({
+          relative: 'folder', pattern: 'blog/:title', move: true, relink: true
+        }))
+        .build(function (err) {
+          if (err) return done(err);
+          equal('test/fixtures/integration1/build', 'test/fixtures/integration1/expected');
+          done();
+        });
+    });
+  })
 });
