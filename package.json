@@ -6,7 +6,8 @@
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "clean": "rm -rf test/fixtures/**/build"
   },
   "dependencies": {
     "slug-component": "~1.1.0",
